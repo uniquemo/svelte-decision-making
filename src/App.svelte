@@ -1,12 +1,13 @@
 <script lang="ts">
   import foodData from './data/food'
+  import type { IFood } from './types/food'
 
-  let running = false;
-  let food = null;
-  let foodName = '';
-  let timer = null;
+  let running: boolean = false;
+  let food: IFood | null = null;
+  let foodName: string = '';
+  let timer: NodeJS.Timeout | null = null;
 
-  const getRandomIndex = (min: number, max: number) => {
+  const getRandomIndex = (min: number, max: number): number => {
     return Math.min(Math.floor(Math.random() * (max - min) + min), max);
   }
 
