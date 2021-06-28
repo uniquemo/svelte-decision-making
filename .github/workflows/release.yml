@@ -1,4 +1,4 @@
-name: release npm package
+name: Deploy static files to uniquemo.github.io
 
 on:
   push:
