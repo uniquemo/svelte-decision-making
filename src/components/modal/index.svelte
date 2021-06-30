@@ -34,6 +34,7 @@
   {#if !hideCloseBtn}
     <button on:click={close}>close</button>
   {/if}
+  <slot name="footer-extra"></slot>
 </div>
 
 <style>

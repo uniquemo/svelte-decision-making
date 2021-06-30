@@ -1,5 +1,6 @@
 <script lang="ts">
   import Modal from 'components/modal/index.svelte';
+  import deepClone from 'utils/deepClone';
   import type { IOption } from 'types/option';
 
   export let options: IOption[];
@@ -8,11 +9,12 @@
   let showModal: boolean = false;
   let option: IOption | null = null;
   let timer: NodeJS.Timeout | null = null;
-  let optionList: IOption[] = [...options];
+  let optionList: IOption[] = deepClone(options);
   let optionInput: string = '';
 
   $: optionName = option?.name || '';
   $: activeOptionList = optionList.filter((f: IOption) => !f.hide);
+  $: console.log('options => ', optionList)
 
   const getRandomIndex = (min: number, max: number): number => {
     return Math.min(Math.floor(Math.random() * (max - min) + min), max);
@@ -43,8 +45,14 @@
   }
 
   const addOption = () => {
-    optionList = [...optionList, { name: optionInput }]
+    const name = optionInput.trim();
+    if (!name) return;
+    optionList = [...optionList, { name }]
     optionInput = '';
+  }
+
+  const resetOptions = () => {
+    optionList = deepClone(options);
   }
 </script>
 
@@ -70,7 +78,19 @@
         class="modal-option-input"
         bind:value={optionInput}
       />
-      <button class="add-option-btn" on:click={addOption}>+</button>
+      <button
+        class="add-option-btn"
+        disabled={!optionInput.trim()}
+        on:click={addOption}
+      >
+        +
+      </button>
+      <button
+        slot="footer-extra"
+        on:click={resetOptions}
+      >
+        Reset
+      </button>
     </Modal>
   {/if}
   <div class="options-info">
